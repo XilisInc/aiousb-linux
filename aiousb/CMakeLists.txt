@@ -3,6 +3,7 @@ add_library(aiousb STATIC aiousb.cpp adc-threads.cpp)
 add_library(aiousb_shared SHARED aiousb.cpp adc-threads.cpp)
 
 set_property(TARGET aiousb aiousb_shared PROPERTY POSITION_INDEPENDENT_CODE ON)
+target_link_libraries(aiousb_shared udev)
 
 
 if (AIOUSB_DEBUG)

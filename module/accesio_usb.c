@@ -615,10 +615,13 @@ static ssize_t accesio_usb_write(struct file* filp, const char* user_buffer, siz
 
 static int ioctl_ACCESIO_USB_CONTROL_XFER (struct accesio_usb_device_info *dev, unsigned long arg)
 {
-    struct accesio_usb_control_transfer *context = (struct accesio_usb_control_transfer *) arg;
+
     int status = 0;
     int bytes_remaining = 0;
     unsigned int pipe;
+    struct accesio_usb_control_transfer C, *context;
+    context=&C;
+    copy_from_user(context, (void*)arg, sizeof(C));
 
     bytes_remaining = copy_from_user(dev->dma_capable_buffer, context->data, context->size);
 
@@ -674,11 +677,13 @@ void accesio_urb_complete(struct urb *urb)
 
 static int ioctl_ACCESIO_USB_BULK_XFER (struct accesio_usb_device_info *dev, unsigned long arg)
 {
-    struct accesio_usb_bulk_transfer *context = (struct accesio_usb_bulk_transfer *)arg;
     int status = 0;
     unsigned int endpoint;
     unsigned int pipe;
     int bytes_remaining;
+    struct accesio_usb_bulk_transfer C, *context;
+    context=&C;
+    copy_from_user(context, (void*)arg, sizeof(C));
 
     bytes_remaining = copy_from_user(dev->dma_capable_buffer, context->data, context->size);
 
